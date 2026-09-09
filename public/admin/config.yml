@@ -7,7 +7,7 @@ backend:
 publish_mode: editorial_workflow
 
 media_folder: "public/images/uploads" # dónde se guardan las imágenes subidas
-public_folder: "/images/uploads"      # URL pública para esas imágenes
+public_folder: "/images/uploads" # URL pública para esas imágenes
 
 collections:
   - name: "explicaciones"
@@ -34,6 +34,7 @@ collections:
           - "Trigonometría"
           - "Estadística"
           - "Aritmética"
+          - "Física"
 
       - label: "Fecha de publicación"
         name: "date"
