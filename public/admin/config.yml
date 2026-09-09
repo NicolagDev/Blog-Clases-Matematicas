@@ -1,0 +1,61 @@
+backend:
+  name: git-gateway
+  branch: main # la rama sobre la que Decap hará commits
+
+# Flujo editorial: cada entrada pasa por Borrador -> En revisión -> Listo,
+# antes de mezclarse a 'main'. Ideal para que el profesor revise antes de publicar.
+publish_mode: editorial_workflow
+
+media_folder: "public/images/uploads" # dónde se guardan las imágenes subidas
+public_folder: "/images/uploads"      # URL pública para esas imágenes
+
+collections:
+  - name: "explicaciones"
+    label: "Explicaciones de Matemáticas"
+    label_singular: "Explicación"
+    folder: "src/content/explicaciones"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    format: "frontmatter"
+    extension: "md"
+    summary: "{{title}} — {{topic}}"
+    sortable_fields: ["date", "title", "difficulty"]
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+
+      - label: "Tema"
+        name: "topic"
+        widget: "select"
+        options:
+          - "Álgebra"
+          - "Cálculo"
+          - "Geometría"
+          - "Trigonometría"
+          - "Estadística"
+          - "Aritmética"
+
+      - label: "Fecha de publicación"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+
+      - label: "Descripción corta"
+        name: "description"
+        widget: "text"
+        hint: "Aparece en la lista de inicio, debajo del título."
+
+      - label: "Dificultad"
+        name: "difficulty"
+        widget: "select"
+        options:
+          - "Principiante"
+          - "Intermedio"
+          - "Avanzado"
+
+      - label: "Contenido"
+        name: "body"
+        widget: "markdown"
+        hint: "Usa $formula$ para LaTeX en línea y $$formula$$ para bloques."

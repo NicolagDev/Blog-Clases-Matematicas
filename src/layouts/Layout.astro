@@ -1,0 +1,48 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'Explicaciones de matemáticas, paso a paso.' } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Hoja de estilos de KaTeX, necesaria para que las fórmulas se vean correctamente -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+      integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="bg-paper text-ink font-sans min-h-screen flex flex-col antialiased">
+    <header class="border-b border-rule">
+      <div class="max-w-2xl mx-auto px-6 py-5">
+        <a href="/" class="font-serif text-xl font-semibold text-ink">Aula de Matemáticas</a>
+      </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto w-full px-6 py-10 flex-1">
+      <slot />
+    </main>
+
+    <footer class="border-t border-rule">
+      <div class="max-w-2xl mx-auto px-6 py-5 text-sm text-ink/50">
+        Publicado con Astro y Decap CMS.
+      </div>
+    </footer>
+  </body>
+</html>

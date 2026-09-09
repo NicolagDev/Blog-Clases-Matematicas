@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Comments from '../../components/Comments.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('explicaciones');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'explicaciones'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const dotColor: Record<string, string> = {
+  Principiante: 'bg-beginner',
+  Intermedio: 'bg-intermediate',
+  Avanzado: 'bg-advanced',
+};
+---
+<Layout title={post.data.title} description={post.data.description}>
+  <article>
+    <a href="/" class="text-sm text-accent hover:underline">&larr; Volver al inicio</a>
+
+    <header class="mt-6 mb-8">
+      <p class="text-sm text-ink/60 mb-2">{post.data.topic}</p>
+      <h1 class="font-serif text-3xl font-semibold leading-tight mb-3">{post.data.title}</h1>
+      <div class="flex items-center gap-4 text-sm text-ink/50">
+        <span class="flex items-center gap-1.5">
+          <span class={`w-1.5 h-1.5 rounded-full ${dotColor[post.data.difficulty]}`}></span>
+          {post.data.difficulty}
+        </span>
+        <time>
+          {post.data.date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+      </div>
+    </header>
+
+    <!-- El contenido Markdown ya viene procesado por remark-math + rehype-katex -->
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+
+    <Comments />
+  </article>
+</Layout>

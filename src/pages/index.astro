@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('explicaciones')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// Agrupar por tema (topic)
+const grupos = posts.reduce<Record<string, typeof posts>>((acc, post) => {
+  const tema = post.data.topic;
+  acc[tema] = acc[tema] ? [...acc[tema], post] : [post];
+  return acc;
+}, {});
+
+const temas = Object.keys(grupos).sort();
+
+const dotColor: Record<string, string> = {
+  Principiante: 'bg-beginner',
+  Intermedio: 'bg-intermediate',
+  Avanzado: 'bg-advanced',
+};
+---
+<Layout title="Aula de Matemáticas">
+  <h1 class="font-serif text-3xl font-semibold mb-10">Explicaciones por tema</h1>
+
+  {temas.length === 0 && (
+    <p class="text-ink/60">
+      Todavía no hay explicaciones publicadas. Entra a
+      <a href="/admin" class="text-accent underline">/admin</a> para crear la primera.
+    </p>
+  )}
+
+  {temas.map((tema) => (
+    <section class="mb-10">
+      <h2 class="font-serif text-lg font-semibold pb-2 border-b border-rule mb-1">{tema}</h2>
+      <ul>
+        {grupos[tema]
+          .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+          .map((post) => (
+            <li class="border-b border-rule last:border-b-0">
+              <a href={`/blog/${post.slug}/`} class="group flex items-start justify-between gap-4 py-4">
+                <span>
+                  <span class="flex items-center gap-2 mb-1">
+                    <span class={`w-1.5 h-1.5 rounded-full ${dotColor[post.data.difficulty]}`}></span>
+                    <span class="text-xs text-ink/60">{post.data.difficulty}</span>
+                  </span>
+                  <span class="font-medium text-ink group-hover:text-accent">{post.data.title}</span>
+                  <span class="block text-sm text-ink/60 mt-0.5">{post.data.description}</span>
+                </span>
+                <time class="text-xs text-ink/40 whitespace-nowrap pt-0.5">
+                  {post.data.date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}
+                </time>
+              </a>
+            </li>
+          ))}
+      </ul>
+    </section>
+  ))}
+</Layout>
