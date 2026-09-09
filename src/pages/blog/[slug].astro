@@ -47,6 +47,6 @@ const dotColor: Record<string, string> = {
       <Content />
     </div>
 
-    <Comments />
+    <Comments pageId={post.slug} pageTitle={post.data.title} />
   </article>
 </Layout>
