@@ -1,28 +1,24 @@
 ---
-// Sistema de comentarios: Giscus (basado en GitHub Discussions).
-// Reemplaza los 4 valores de abajo con los que genera https://giscus.app
-// una vez configurado tu repositorio (ver instrucciones en el README / respuesta del chat).
-const REPO = 'NicolagDev/Blog-Clases-Matematicas';
-const REPO_ID = 'R_kgDOUTDpUg';
-const CATEGORY = 'Announcements';
-const CATEGORY_ID = 'DIC_kwDOUTDpUs4DFMWE';
+// Sistema de comentarios: Cusdis. Permite comentar sin necesidad de crear cuenta
+// (nombre opcional, sin login obligatorio) y trae panel de moderación propio.
+const APP_ID = '79b720bb-6426-48a0-9269-03c607bea2a4'; // <-- reemplaza esto por el que copiaste de "Embeded code"
+
+interface Props {
+  pageId: string;
+  pageTitle: string;
+}
+const { pageId, pageTitle } = Astro.props;
+const pageUrl = Astro.url.href;
 ---
 <section class="mt-14 pt-8 border-t border-rule">
   <h2 class="font-serif text-lg font-semibold mb-4">Preguntas y comentarios</h2>
-  <script
-    src="https://giscus.app/client.js"
-    data-repo={REPO}
-    data-repo-id={REPO_ID}
-    data-category={CATEGORY}
-    data-category-id={CATEGORY_ID}
-    data-mapping="pathname"
-    data-strict="0"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="light"
-    data-lang="es"
-    crossorigin="anonymous"
-    async
-  ></script>
+  <div
+    id="cusdis_thread"
+    data-host="https://cusdis.com"
+    data-app-id={APP_ID}
+    data-page-id={pageId}
+    data-page-url={pageUrl}
+    data-page-title={pageTitle}
+  ></div>
+  <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 </section>
